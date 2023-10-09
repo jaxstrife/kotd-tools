@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <div id="root"></div>
+</body>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script async src="https://ga.jspm.io/npm:es-module-shims@1.7.0/dist/es-module-shims.js"></script>
+
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react?dev",
+    "react-dom/client": "https://esm.sh/react-dom/client?dev"
+  }
+}
+</script>
+<script type="text/babel" data-type="module">
+  import React, { StrictMode } from 'react';
+  import { createRoot } from 'react-dom/client';
+  import { useState } from 'react';
+
+  class Square extends React.Component {
+    render() {
+      return (
+        <div className="square">
+          <div className="buttonPresses text-xl text-center text-stone-300">{this.props.value} </div> 
+          <div className="relative"> 
+          <span className="buttonVal text-2xl text-center absolute inset-x-0 top-0 pointer-events-none text-stone-300">{this.props.displayValue}</span>
+          <button
+            className="buttonLeft aboslute inset-y-0 left-0 w-1/2 h-8 rounded-l-lg text-stone-300 bg-neutral-600 hover:bg-neutral-500"
+            onClick={
+              () => this.props.clickFunc(this.props.displayValue,'l')
+            }
+          >
+          -
+          </button>
+          <button 
+            className="buttonRight aboslute inset-y-0 right-0 w-1/2 h-8 rounded-r-lg text-stone-300 hover:bg-slate-300 bg-slate-600 hover:bg-slate-500"
+            onClick={
+              () => this.props.clickFunc(this.props.displayValue,'r')
+            }
+          >
+          +
+          </button>
+        </div>
+        </div>
+      )
+    }
+  }
+
+  class Calc extends React.Component {
+    constructor(props){
+      super(props)
+      this.state = {
+        calcVals:Array(9).fill(0),
+      }
+    }
+
+    calcTotal(){
+      let total = 0;
+      this.state.calcVals.forEach((item, index, arr)=>{
+        total += item * ((index + 1) * 5)
+      })
+      return total;
+    }
+
+    handleClick(i,s){
+      const stateVal = this.state.calcVals
+      if(s=='l'){
+        stateVal[i] = stateVal[i] - 1
+      } else {
+        stateVal[i] = stateVal[i] + 1
+      }
+      console.log(this.state.calcVals)
+      this.setState({calcVals:stateVal});
+    }
+
+    renderSquare(i,s) {
+      return (
+        <Square 
+        displayValue={i} 
+        value={ this.state.calcVals[i - 1] } 
+        clickFunc={(i,s)=> this.handleClick(i-1,s)} />
+      )
+    }
+
+    render() {
+      let result = this.calcTotal()
+
+      return (
+        <div className="flex flex-row pt-6">
+          <div className="flex flex-col basis-1/3"> </div>
+        <div className="flex flex-col basis-full md:basis-1/3">
+          <div className="result text-4xl text-center text-stone-300">{result}</div>
+          <div className="grid" > 
+          <div className="grid grid-cols-3 gap-2">
+            {this.renderSquare(7)}
+            {this.renderSquare(8)}
+            {this.renderSquare(9)}        
+            {this.renderSquare(4)}
+            {this.renderSquare(5)}
+            {this.renderSquare(6)}         
+            {this.renderSquare(1)}
+            {this.renderSquare(2)}
+            {this.renderSquare(3)}
+          </div>
+        </div>
+        <p className="italic font-mono pt-12 text-sm text-slate-300"> This tool is provided by <a href="https://www.reddit.com/user/JaxStrife"> u/JaxStrife </a> for personal use as well as the Kick Open the Door Discord </p>
+        <p className="italic font-mono pt-12 text-xs text-slate-300"> it's cause I can't math :\ </p>
+        </div>
+        <div className="flex flex-col basis-1/3"> </div>
+        </div>
+      )
+    }
+  }
+
+  const root = createRoot(document.getElementById('root'));
+  root.render(
+    <StrictMode>
+      <div className="bg-zinc-900 h-screen"> 
+
+      <Calc />
+
+      </div>
+    </StrictMode>
+  );
+</script>
+
+</html>
