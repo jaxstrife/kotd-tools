@@ -24,9 +24,9 @@
     render() {
       return (
         <div className="square">
-          <div className="buttonPresses text-7xl lg:text-xl text-center text-stone-300">{this.props.value} </div> 
+          <div className="buttonPresses text-7xl lg:text-xl text-center text-stone-300">{this.props.displayValue} </div> 
           <div className="relative"> 
-          <span className="buttonVal text-8xl lg:text-2xl text-center absolute inset-x-0 top-0 pointer-events-none text-stone-300">{this.props.displayValue}</span>
+          <span className="buttonVal text-8xl lg:text-2xl text-center absolute inset-x-0 top-0 pointer-events-none text-stone-300">{this.props.value}</span>
           <button
             className="buttonLeft aboslute inset-y-0 left-0 w-1/2 h-32 lg:h-8 rounded-l-lg text-stone-300 bg-neutral-600 hover:bg-neutral-500"
             onClick={
